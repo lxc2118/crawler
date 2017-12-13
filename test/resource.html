@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+<script>
+    $(function(){
+        var resourceSocket = new WebSocket('ws://172.16.19.110:8888/resource');
+		resourceSocket.onopen = function() {
+			console.log('resource socket open');
+		}
+		resourceSocket.onerror = function() {
+			console.log('resource socket error');
+		}
+		resourceSocket.onmessage = updateResource;
+
+        function updateResource(evt){
+            var data = JSON.parse(evt.data);
+            console.log(data);
+	    }
+    })
+
+</script>
+</body>
+</html>

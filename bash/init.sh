@@ -4,6 +4,23 @@ vimrc_path=~/.vimrc.bak
 id_rsa_path=~/.ssh/id_rsa.pub
 apt_sources_path=/etc/apt/sources.list
 
+pip2_lib=(
+    pep8
+    pygments
+    sh
+    argparse
+    lxml
+    xmltodict
+    requests
+    pdb mako
+    matplotlib
+    numpy
+    pandas
+)
+
+pip3_lib=()
+
+
 mk_file() {
     if [ ! -e $1 ]
     then
@@ -38,7 +55,7 @@ init_apt_source() {
     "deb http://mirrors.aliyun.com/ubuntu/ xenial universe" >> $1
     "deb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe" >> $1
     "deb http://mirrors.aliyun.com/ubuntu/ xenial multiverse" >> $1
-    "deb http://mirrors.aliyun.com/ubuntu/ xenial-updates multiverse" > $1
+    "deb http://mirrors.aliyun.com/ubuntu/ xenial-updates multiverse" >> $1
     "deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse" >> $1
     "deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted" >> $1
     "deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe" >> $1
@@ -47,8 +64,40 @@ init_apt_source() {
     apt-get update
 }
 
-init_git() {
-    mk_file $id_rsa_path
+pip2_install() {
+    for lib in ${pip2_lib[@]};
+    do
+        pip2 install $lib
+        pip2 install --upgrade $lib
+    done
 }
 
+pip3_install() {
+    for lib in ${pip3_lib[@]};
+    do
+        pip3 install $lib
+        pip3 install --upgrade $lib
+    done
+}
 
+init_git() {
+    mk_file $id_rsa_path
+    git config --global user.name $git_name
+    git config --global user.email %git_email
+    git config color.ui true
+}
+
+ss_qt5_install() {
+    add-apt-repository ppa:hzwhuang/ss-qt5
+    apt-get update
+    apt-get install shadowsocks-qt5
+}
+
+apt_get_install() {
+    apt-get install openssh-server
+    apt-get install tig
+    apt-get install sqlitebrowser
+    apt install python-pip
+    apt install python3-pip
+    apt install xpad
+}
